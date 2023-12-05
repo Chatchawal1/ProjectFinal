@@ -45,4 +45,32 @@ router.get("/userCount", (req, res) => {
     res.json({ userCount });
   });
 }); //จำนวนผู้ใช้ทั้งหมด
+router.get("/lentTotal", (req, res) => {
+  const query =
+    "SELECT COUNT(DISTINCT user_id) AS total_users FROM loan_management";
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error("Error querying database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+
+    res.json({ totalUsers: results[0].total_users });
+  });
+});
+router.get("/equipmentTotal", (req, res) => {
+  const query =
+    "SELECT COUNT(DISTINCT recreational_id,sport_id) AS total_equipments FROM loan_management";
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error("Error querying database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+
+    res.json({ totalEquipments: results[0].total_equipments });
+  });
+});
 module.exports = router;
